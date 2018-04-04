@@ -1,7 +1,7 @@
 {
-  "name": "spectacle-editor-viewer",
-  "version": "0.2.0",
-  "description": "Viewer component for Spectacle Editor presentation files",
+  "name": "plotly-spectacle-editor-viewer",
+  "version": "0.3.0",
+  "description": "Viewer component for Spectacle Editor presentation files - forked from FormidableLabs/spectacle-editor-viewer",
   "main": "lib/index.js",
   "scripts": {
     "start": "node server.js",
@@ -18,9 +18,10 @@
     "lowlight": "^1.9.1",
     "react-syntax-highlighter": "^2.6.0",
     "sanitize-html": "^1.14.1",
-    "spectacle": "^1.1.6"
+    "spectacle": "^4.2.2"
   },
   "peerDependencies": {
+    "prop-types": "^15.6.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1"
   },

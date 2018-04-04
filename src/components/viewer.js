@@ -1,21 +1,19 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import * as Core from 'spectacle';
 import sanitizeHtml from 'sanitize-html';
 import theme from '../theme';
 
-import Syntax from './syntax';
 import migrate from '../migrations';
 import { passAllowedSpectacleElements, sanitizeUri } from '../util/sanitize';
 
-const { Spectacle, Deck, Slide, Appear } = Core;
+const { Deck, Slide } = Core;
 
-Core.Plotly = ({src, style, height, width, scrolling, frameBorder, name}) => (
+Core.Plotly = ({ src, style, height, width, scrolling, frameBorder, name }) => (
   <iframe src={sanitizeUri(src)} style={style} height={height} width={width}
-    scrolling={scrolling} frameBorder={frameBorder} name={name} />
+    scrolling={scrolling} frameBorder={frameBorder} name={name}
+  />
 );
-
-// Use custom Syntax component for CodePane
-Core.CodePane = Syntax;
 
 const quoteStyles = {
   borderLeftWidth: '0.05em',
@@ -24,15 +22,13 @@ const quoteStyles = {
   paddingLeft: '0.5em',
 };
 
-const getStylesForText = (props, paragraphStyles) => {
-  return Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
-};
+const getStylesForText = (props, paragraphStyles) => Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
 
 const escapeHtml = (str) => {
-  const div = document.createElement("div");
+  const div = document.createElement('div');
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
-}
+};
 
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes
@@ -44,7 +40,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         if (isListItem) {
           return (<li key={`line-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
         }
-        return <span key={`line-${i}`} style={{ width: "100%", display: "block" }} dangerouslySetInnerHTML={{ __html: contents }} />;
+        return <span key={`line-${i}`} style={{ width: '100%', display: 'block' }} dangerouslySetInnerHTML={{ __html: contents }} />;
       }
 
       // defaultText handling
@@ -77,13 +73,13 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
             <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
               {renderChildren(children, paragraphStyles)}
             </a>
-          )
+          );
         } else {
           contents = renderChildren(children, paragraphStyles);
         }
 
         return (
-          <Tag key={node.id} {...props} style={{...getStylesForText(props, paragraphStyles)}}>
+          <Tag key={node.id} {...props} style={{ ...getStylesForText(props, paragraphStyles) }}>
             {contents}
           </Tag>
         );
@@ -113,23 +109,23 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
     });
 
 const slideStyles = {
-  flexDirection: "column"
+  flexDirection: 'column',
 };
 
 const innerStyles = {
   height: 700,
   width: 1000,
-  padding: 40
+  padding: 40,
 };
 
-const renderSlides = ({slides, paragraphStyles}) =>
+const renderSlides = ({ slides, paragraphStyles }) =>
   slides.map((slide) => {
     if (slide.props.notes) {
       slide.props.notes = sanitizeHtml(slide.props.notes);
     }
 
     return (
-      <Slide key={slide.id} {...slide.props} style={{...slide.props.style, ...slideStyles}} viewerScaleMode>
+      <Slide key={slide.id} {...slide.props} style={{ ...slide.props.style, ...slideStyles }} viewerScaleMode>
         <div style={innerStyles}>
           {slide.children && renderChildren(slide.children, paragraphStyles)}
         </div>
@@ -140,17 +136,14 @@ const renderSlides = ({slides, paragraphStyles}) =>
 const Viewer = (props) => {
   const presentation = migrate(props.content.presentation);
   return (
-    <Spectacle theme={{ screen: theme, print: theme }} history={props.history}>
-      <Deck transition={[]} globalStyles={false} progress="none">
-        {renderSlides(presentation)}
-      </Deck>
-    </Spectacle>
+    <Deck theme={{ screen: theme, print: theme }} transition={[]} globalStyles={false} progress="none">
+      {renderSlides(presentation)}
+    </Deck>
   );
-}
+};
 
 Viewer.propTypes = {
   content: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default Viewer;
