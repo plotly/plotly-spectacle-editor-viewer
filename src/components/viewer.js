@@ -136,7 +136,7 @@ const renderSlides = ({ slides, paragraphStyles }) =>
 const Viewer = (props) => {
   const presentation = migrate(props.content.presentation);
   return (
-    <Deck theme={{ screen: theme, print: theme }} transition={[]} globalStyles={false} progress="none">
+    <Deck theme={{ screen: theme, print: theme }} transition={[]} globalStyles={false} progress="none" history={props.history}>
       {renderSlides(presentation)}
     </Deck>
   );
