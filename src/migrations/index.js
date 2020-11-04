@@ -7,9 +7,11 @@ export default (presentation) => {
     cloned.slides.forEach((slide) => {
       slide.children.forEach((childObj) => {
         // move width/height to inline styles
-        childObj.props.style.width = childObj.props.style.width || childObj.props.width;
+        childObj.props.style.width =
+          childObj.props.style.width || childObj.props.width;
         delete childObj.props.width;
-        childObj.props.style.height = childObj.props.style.height || childObj.props.height;
+        childObj.props.style.height =
+          childObj.props.style.height || childObj.props.height;
         delete childObj.props.height;
 
         // add newline to end of all lines

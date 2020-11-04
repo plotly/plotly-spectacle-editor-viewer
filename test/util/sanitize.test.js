@@ -1,26 +1,29 @@
-const { expect } = require('chai');
-const { passAllowedSpectacleElements, sanitizeUri } = require('../../src/util/sanitize');
+const {expect} = require('chai');
+const {
+  passAllowedSpectacleElements,
+  sanitizeUri,
+} = require('../../src/util/sanitize');
 
 describe('util/sanitize', () => {
   describe('passAllowedSpectacleElements', () => {
     it('allows Text', () => {
-      expect(passAllowedSpectacleElements({ type: 'Text' })).to.equal(true);
+      expect(passAllowedSpectacleElements({type: 'Text'})).to.equal(true);
     });
 
     it('allows Image', () => {
-      expect(passAllowedSpectacleElements({ type: 'Image' })).to.equal(true);
+      expect(passAllowedSpectacleElements({type: 'Image'})).to.equal(true);
     });
 
     it('allows Plotly', () => {
-      expect(passAllowedSpectacleElements({ type: 'Plotly' })).to.equal(true);
+      expect(passAllowedSpectacleElements({type: 'Plotly'})).to.equal(true);
     });
 
     it('allows CodePane', () => {
-      expect(passAllowedSpectacleElements({ type: 'CodePane' })).to.equal(true);
+      expect(passAllowedSpectacleElements({type: 'CodePane'})).to.equal(true);
     });
 
     it('disallows Markdown', () => {
-      expect(passAllowedSpectacleElements({ type: 'Markdown' })).to.equal(false);
+      expect(passAllowedSpectacleElements({type: 'Markdown'})).to.equal(false);
     });
   });
 
