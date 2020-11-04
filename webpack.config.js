@@ -25,7 +25,7 @@ module.exports = {
         loaders: ['json'],
         include: [
           path.join(__dirname, 'demo'),
-          path.join(__dirname, 'node_modules/entities/maps'),
+          path.join(__dirname, 'node_modules/entities/lib/maps'),
           path.join(
             __dirname,
             'node_modules/sanitize-html/node_modules/entities/maps'
