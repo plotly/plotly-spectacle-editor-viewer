@@ -16,7 +16,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lowlight": "^1.9.1",
     "sanitize-html": "^2.1.2",
-    "spectacle": "^6.2.0"
+    "spectacle": "^5.8.0"
   },
   "peerDependencies": {
     "prop-types": "^15.6.1",
