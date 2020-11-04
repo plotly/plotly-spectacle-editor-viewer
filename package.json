@@ -1,6 +1,6 @@
 {
   "name": "plotly-spectacle-editor-viewer",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Viewer component for Spectacle Editor presentation files - forked from FormidableLabs/spectacle-editor-viewer",
   "main": "lib/index.js",
   "scripts": {
