@@ -16,7 +16,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lowlight": "^1.9.1",
     "react-syntax-highlighter": "^2.6.0",
-    "sanitize-html": "^1.14.1",
+    "sanitize-html": "^2.1.2",
     "spectacle": "^4.2.2"
   },
   "peerDependencies": {
