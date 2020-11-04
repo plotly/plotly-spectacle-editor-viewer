@@ -10,7 +10,6 @@ const PORT = 3000;
 
 app.use(
   require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
     publicPath: config.output.publicPath,
   })
 );

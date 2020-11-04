@@ -1,7 +1,10 @@
+'use strict';
+
 const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'development',
   devtool: 'source-map',
   entry: ['webpack-hot-middleware/client', './demo/index'],
   output: {
@@ -9,20 +12,22 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/dist/',
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loaders: ['babel'],
+        loader: 'babel-loader',
         include: [path.join(__dirname, 'src'), path.join(__dirname, 'demo')],
       },
       {
         test: /\.json$/,
-        loaders: ['json'],
+        use: [
+          {
+            loader: 'json-loader',
+          },
+        ],
+        type: 'javascript/auto',
         include: [
           path.join(__dirname, 'demo'),
           path.join(__dirname, 'node_modules/entities/lib/maps'),
@@ -33,5 +38,11 @@ module.exports = {
         ],
       },
     ],
+  },
+  resolve: {
+    fallback: {
+      path: require.resolve('path-browserify'),
+      url: require.resolve('url/'),
+    },
   },
 };
