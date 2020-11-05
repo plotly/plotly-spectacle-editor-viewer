@@ -1,17 +1,23 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import * as Core from 'spectacle';
 import sanitizeHtml from 'sanitize-html';
 import theme from '../theme';
 
 import migrate from '../migrations';
-import { passAllowedSpectacleElements, sanitizeUri } from '../util/sanitize';
+import {passAllowedSpectacleElements, sanitizeUri} from '../util/sanitize';
 
-const { Deck, Slide } = Core;
+const {Deck, Slide} = Core;
 
-Core.Plotly = ({ src, style, height, width, scrolling, frameBorder, name }) => (
-  <iframe src={sanitizeUri(src)} style={style} height={height} width={width}
-    scrolling={scrolling} frameBorder={frameBorder} name={name}
+// eslint-disable-next-line no-import-assign
+Core.Plotly = ({src, style, height, width, scrolling, frameBorder, name}) => (
+  <iframe
+    src={sanitizeUri(src)}
+    style={style}
+    height={height}
+    width={width}
+    scrolling={scrolling}
+    frameBorder={frameBorder}
+    name={name}
   />
 );
 
@@ -22,7 +28,8 @@ const quoteStyles = {
   paddingLeft: '0.5em',
 };
 
-const getStylesForText = (props, paragraphStyles) => Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
+const getStylesForText = (props, paragraphStyles) =>
+  Object.assign({}, paragraphStyles[props.paragraphStyle], props.style);
 
 const escapeHtml = (str) => {
   const div = document.createElement('div');
@@ -32,15 +39,27 @@ const escapeHtml = (str) => {
 
 const renderChildren = (nodes, paragraphStyles, isListItem) =>
   nodes
-    .filter(node => passAllowedSpectacleElements(node))
+    .filter((node) => passAllowedSpectacleElements(node))
     .map((node, i) => {
       // Text node
       if (typeof node === 'string') {
         const contents = escapeHtml(node).replace(/\n/g, '<br>');
         if (isListItem) {
-          return (<li key={`line-${i}`} style={theme.components.listItem} dangerouslySetInnerHTML={{ __html: contents }} />);
+          return (
+            <li
+              key={`line-${i}`}
+              style={theme.components.listItem}
+              dangerouslySetInnerHTML={{__html: contents}}
+            />
+          );
         }
-        return <span key={`line-${i}`} style={{ width: '100%', display: 'block' }} dangerouslySetInnerHTML={{ __html: contents }} />;
+        return (
+          <span
+            key={`line-${i}`}
+            style={{width: '100%', display: 'block'}}
+            dangerouslySetInnerHTML={{__html: contents}}
+          />
+        );
       }
 
       // defaultText handling
@@ -48,7 +67,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         return node.defaultText;
       }
 
-      const { type, children, props } = node;
+      const {type, children, props} = node;
 
       // Get component from Spectacle core
       let Tag = Core[type];
@@ -60,7 +79,7 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
 
       // Trap links with disallowed protocols and replace with an empty string.
       const urlPropNames = ['href', 'src'];
-      urlPropNames.forEach(propName => {
+      urlPropNames.forEach((propName) => {
         if (props[propName]) {
           props[propName] = sanitizeUri(props[propName]);
         }
@@ -70,7 +89,10 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         let contents;
         if (props.href) {
           contents = (
-            <a href={props.href} style={{ textDecoration: 'inherit', color: 'inherit' }}>
+            <a
+              href={props.href}
+              style={{textDecoration: 'inherit', color: 'inherit'}}
+            >
               {renderChildren(children, paragraphStyles)}
             </a>
           );
@@ -79,7 +101,11 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
         }
 
         return (
-          <Tag key={node.id} {...props} style={{ ...getStylesForText(props, paragraphStyles) }}>
+          <Tag
+            key={node.id}
+            {...props}
+            style={{...getStylesForText(props, paragraphStyles)}}
+          >
             {contents}
           </Tag>
         );
@@ -87,13 +113,13 @@ const renderChildren = (nodes, paragraphStyles, isListItem) =>
       }
 
       if (type === 'Text' && props.listType) {
-        Tag = (props.listType === 'ordered') ? 'ol' : 'ul';
+        Tag = props.listType === 'ordered' ? 'ol' : 'ul';
 
         return (
           <Tag
             key={node.id}
             className="presentation-list"
-            style={{ ...getStylesForText(props, paragraphStyles), margin: 0 }}
+            style={{...getStylesForText(props, paragraphStyles), margin: 0}}
           >
             {children && renderChildren(children, paragraphStyles, true)}
           </Tag>
@@ -118,14 +144,19 @@ const innerStyles = {
   padding: 40,
 };
 
-const renderSlides = ({ slides, paragraphStyles }) =>
+const renderSlides = ({slides, paragraphStyles}) =>
   slides.map((slide) => {
     if (slide.props.notes) {
       slide.props.notes = sanitizeHtml(slide.props.notes);
     }
 
     return (
-      <Slide key={slide.id} {...slide.props} style={{ ...slide.props.style, ...slideStyles }} viewerScaleMode>
+      <Slide
+        key={slide.id}
+        {...slide.props}
+        style={{...slide.props.style, ...slideStyles}}
+        viewerScaleMode
+      >
         <div style={innerStyles}>
           {slide.children && renderChildren(slide.children, paragraphStyles)}
         </div>
@@ -136,7 +167,12 @@ const renderSlides = ({ slides, paragraphStyles }) =>
 const Viewer = (props) => {
   const presentation = migrate(props.content.presentation);
   return (
-    <Deck theme={{ screen: theme, print: theme }} transition={[]} globalStyles={false} progress="none">
+    <Deck
+      theme={{screen: theme, print: theme}}
+      transition={[]}
+      globalStyles={false}
+      progress="none"
+    >
       {renderSlides(presentation)}
     </Deck>
   );
